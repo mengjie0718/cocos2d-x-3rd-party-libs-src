@@ -133,7 +133,13 @@ For building libpng fat library with all arch x86_64, i386, armv7, arm64 on rele
 cd build
 ./build.sh -p=ios --libs=png
 ```
-
+```
+cd build
+./build.sh -p=mac --libs=luajit -a=i386
+./build.sh -p=win --libs=luajit -a=i386
+./build.sh -p=ios --libs=luajit -a=arm64
+./build.sh -p=android --libs=luajit
+```
 After running this command, it will generate a folder named `png`:
 
 The folder structure would be:
