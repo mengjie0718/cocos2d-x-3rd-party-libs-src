@@ -69,12 +69,7 @@ LUAJIT_TARGET_FLAGS="${EXTRA_CFLAGS} ${EXTRA_LDFLAGS}"
 LUAJIT_CROSS_HOST=$(HOST)-
 endif
 ifdef HAVE_WIN32
-ifeq ($(MY_TARGET_ARCH),x86_64)
-LUAJIT_CROSS_HOST=/sdks/mingw-w64/mingw-w64-x86_64/bin/x86_64-w64-mingw32-
-endif
-ifeq ($(MY_TARGET_ARCH),i386)
-LUAJIT_CROSS_HOST=/sdks/mingw-w64/mingw-w64-i686/bin/i686-w64-mingw32-
-endif
+LUAJIT_CROSS_HOST=$(HOST)-
 endif
 .luajit: luajit
 ifdef HAVE_ANDROID
