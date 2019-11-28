@@ -114,8 +114,11 @@ ifeq ($(MY_TARGET_ARCH),x86_64)
 else
 	cd $< && $(MAKE) -j8 CC="gcc -m32 -O3" CROSS=$(LUAJIT_CROSS_HOST) TARGET_SYS=Windows TARGET_FLAGS=$(LUAJIT_TARGET_FLAGS)
 endif
+	mkdir -p  $(PREFIX)/lib/
 	cd $< && cp src/lua51.dll  $(PREFIX)/lib/
+	mkdir -p  $(PREFIX)/bin/
 	cd $< && cp src/luajit.exe  $(PREFIX)/bin/
+	mkdir -p  $(PREFIX)/include/
 endif
 ifndef HAVE_WIN32
 	cd $< && $(MAKE) install PREFIX=$(PREFIX)
