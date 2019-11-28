@@ -438,6 +438,9 @@ do
             cp $top_dir/contrib/$install_library_path/$arch/lib/lib$original_archive_name.a $local_library_install_path/lib$archive_name.a
         fi
 
+        if [ -f $top_dir/contrib/$install_library_path/$arch/lib/$original_archive_name.dll ];then
+            cp $top_dir/contrib/$install_library_path/$arch/lib/$original_archive_name.dll $local_library_install_path/$archive_name.dll
+        fi
         #copy archive list if exists
         parse_archive_list=${lib}_archive_list
         parse_archive_list=${!parse_archive_list}
