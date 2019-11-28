@@ -110,10 +110,14 @@ endif
 endif
 ifdef HAVE_WIN32
 ifeq ($(MY_TARGET_ARCH),x86_64)
-	cd $< && CFLAGS="-DLUAJIT_ENABLE_GC64" LD_FLAGS="" $(MAKE)  -j8 CROSS=$(LUAJIT_CROSS_HOST) TARGET_SYS=Windows
+	cd $< && CFLAGS="-DLUAJIT_ENABLE_GC64" LD_FLAGS="" $(MAKE) -j8 CROSS=$(LUAJIT_CROSS_HOST) TARGET_SYS=Windows
 else
-	cd $< && $(MAKE) -j8 CC="gcc -m32 -O3" CROSS=$(LUAJIT_CROSS_HOST) TARGET_SYS=Windows  TARGET_FLAGS=$(LUAJIT_TARGET_FLAGS)
+	cd $< && $(MAKE) -j8 CC="gcc -m32 -O3" CROSS=$(LUAJIT_CROSS_HOST) TARGET_SYS=Windows TARGET_FLAGS=$(LUAJIT_TARGET_FLAGS)
 endif
+	cd $< && cp src/lua51.dll  $(PREFIX)/lib/
+	cd $< && cp src/luajit.exe  $(PREFIX)/bin/
 endif
+ifndef HAVE_WIN32
 	cd $< && $(MAKE) install PREFIX=$(PREFIX)
+endif
 	touch $@
