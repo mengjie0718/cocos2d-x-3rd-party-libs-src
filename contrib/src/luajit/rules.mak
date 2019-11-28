@@ -82,7 +82,12 @@ ifdef HAVE_ANDROID
 endif
 
 ifdef HAVE_MACOSX
+ifeq ($(MY_TARGET_ARCH),x86_64)
 	cd $< && CFLAGS="-DLUAJIT_ENABLE_GC64" LD_FLAGS="" $(MAKE) -j8
+else
+	cd $< && LD_FLAGS="" $(MAKE) -j8
+endif
+	
 endif
 
 ifndef HAVE_ANDROID

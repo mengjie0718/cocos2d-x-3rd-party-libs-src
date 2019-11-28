@@ -62,3 +62,4 @@ contrib/install-win
 contrib/win-i386
 build/win
 contrib/win-x86_64
+contrib/mac-i386
