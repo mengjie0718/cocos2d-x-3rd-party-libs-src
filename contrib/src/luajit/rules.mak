@@ -68,7 +68,14 @@ endif
 LUAJIT_TARGET_FLAGS="${EXTRA_CFLAGS} ${EXTRA_LDFLAGS}"
 LUAJIT_CROSS_HOST=$(HOST)-
 endif
-
+ifdef HAVE_WIN32
+ifeq ($(MY_TARGET_ARCH),x86_64)
+LUAJIT_CROSS_HOST=/sdks/mingw-w64/mingw-w64-x86_64/bin/x86_64-w64-mingw32-
+endif
+ifeq ($(MY_TARGET_ARCH),i386)
+LUAJIT_CROSS_HOST=/sdks/mingw-w64/mingw-w64-i686/bin/i686-w64-mingw32-
+endif
+endif
 .luajit: luajit
 ifdef HAVE_ANDROID
 	cd $< && $(MAKE) -j8 HOST_CC=$(LUAJIT_HOST_CC) CROSS=$(LUAJIT_CROSS_HOST) CC=clang TARGET_SYS=Linux TARGET_FLAGS=$(LUAJIT_TARGET_FLAGS)
@@ -100,6 +107,13 @@ else
 	cd $< && $(MAKE) -j8 HOST_CC=$(LUAJIT_HOST_CC) CROSS=$(LUAJIT_CROSS_HOST) TARGET_SYS=iOS  TARGET_FLAGS=$(LUAJIT_TARGET_FLAGS)
 endif
 
+endif
+ifdef HAVE_WIN32
+ifeq ($(MY_TARGET_ARCH),x86_64)
+	cd $< && CFLAGS="-DLUAJIT_ENABLE_GC64" LD_FLAGS="" $(MAKE)  -j8 CROSS=$(LUAJIT_CROSS_HOST) TARGET_SYS=Windows
+else
+	cd $< && $(MAKE) -j8 CC="gcc -m32 -O3" CROSS=$(LUAJIT_CROSS_HOST) TARGET_SYS=Windows  TARGET_FLAGS=$(LUAJIT_TARGET_FLAGS)
+endif
 endif
 	cd $< && $(MAKE) install PREFIX=$(PREFIX)
 	touch $@
