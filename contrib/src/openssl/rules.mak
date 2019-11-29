@@ -62,6 +62,10 @@ endif
 ifeq ($(MY_TARGET_ARCH),x86)
 OPENSSL_CONFIG_VARS=android-x86
 endif
+
+ifeq ($(MY_TARGET_ARCH),x86_64)
+OPENSSL_CONFIG_VARS=android64
+endif
 endif
 
 ifdef HAVE_IOS
