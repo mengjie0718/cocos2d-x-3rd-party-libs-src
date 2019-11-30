@@ -65,6 +65,7 @@ endif
 
 ifeq ($(MY_TARGET_ARCH),x86_64)
 OPENSSL_CONFIG_VARS=android64
+OPENSSL_EXTRA_CONFIG_2=no-asm
 endif
 endif
 
