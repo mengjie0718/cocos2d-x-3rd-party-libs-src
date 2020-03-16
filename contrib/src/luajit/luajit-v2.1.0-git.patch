@@ -1,0 +1,42 @@
+diff --git a/src/lj_strfmt_num.c b/src/lj_strfmt_num.c
+index 36b11dc..3004b24 100644
+--- a/src/lj_strfmt_num.c
++++ b/src/lj_strfmt_num.c
+@@ -576,6 +576,9 @@ static char *lj_strfmt_wfnum(SBuf *sb, SFormat sf, lua_Number n, char *p)
+ /* Add formatted floating-point number to buffer. */
+ SBuf *lj_strfmt_putfnum(SBuf *sb, SFormat sf, lua_Number n)
+ {
++  if(n == (int64_t) n){
++    sf=(STRFMT_NUM|STRFMT_T_FP_G | (1 << STRFMT_SH_PREC))^STRFMT_T_FP_E;
++  }
+   setsbufP(sb, lj_strfmt_wfnum(sb, sf, n, NULL));
+   return sb;
+ }
+@@ -586,7 +589,13 @@ SBuf *lj_strfmt_putfnum(SBuf *sb, SFormat sf, lua_Number n)
+ GCstr * LJ_FASTCALL lj_strfmt_num(lua_State *L, cTValue *o)
+ {
+   char buf[STRFMT_MAXBUF_NUM];
+-  MSize len = (MSize)(lj_strfmt_wfnum(NULL, STRFMT_G14, o->n, buf) - buf);
++  SFormat sf=STRFMT_NUM;
++  if(o->n == (int64_t) o->n){
++    sf=(STRFMT_NUM|STRFMT_T_FP_G | (1 << STRFMT_SH_PREC))^STRFMT_T_FP_E;
++  }else{
++    sf=STRFMT_G14;
++  }
++  MSize len = (MSize)(lj_strfmt_wfnum(NULL, sf, o->n, buf) - buf);
+   return lj_str_new(L, buf, len);
+ }
+ 
+diff --git a/src/luaconf.h b/src/luaconf.h
+index d422827..bb4c654 100644
+--- a/src/luaconf.h
++++ b/src/luaconf.h
+@@ -102,7 +102,7 @@
+ 
+ /* Note: changing the following defines breaks the Lua 5.1 ABI. */
+ #define LUA_INTEGER	ptrdiff_t
+-#define LUA_IDSIZE	60	/* Size of lua_Debug.short_src. */
++#define LUA_IDSIZE	512	/* Size of lua_Debug.short_src. */
+ /*
+ ** Size of lauxlib and io.* on-stack buffers. Weird workaround to avoid using
+ ** unreasonable amounts of stack space, but still retain ABI compatibility.

@@ -1,14 +1,15 @@
 # luajit
 
-LUAJIT_VERSION := 2.1.0-beta3
+LUAJIT_VERSION := 2.1.0-git
 LUAJIT_URL := http://luajit.org/download/LuaJIT-$(LUAJIT_VERSION).tar.gz
-
+LUAJIT_GIT :=https://gitee.com/mengjie0718/luajit-2.0.git
 $(TARBALLS)/LuaJIT-$(LUAJIT_VERSION).tar.gz:
+ifeq ($(LUAJIT_VERSION),2.1.0-git)
+	$(call download_git,$(LUAJIT_GIT),v2.1,v2.1)
+else
 	$(call download,$(LUAJIT_URL))
-
-.sum-luajit: LuaJIT-$(LUAJIT_VERSION).tar.gz
-
-luajit: LuaJIT-$(LUAJIT_VERSION).tar.gz .sum-luajit
+endif
+luajit: LuaJIT-$(LUAJIT_VERSION).tar.gz
 	$(UNPACK)
 ifeq ($(LUAJIT_VERSION),2.0.1)
 	$(APPLY) $(SRC)/luajit/v2.0.1_hotfix1.patch
@@ -19,6 +20,9 @@ ifeq ($(LUAJIT_VERSION),2.1.0-beta2)
 endif
 ifeq ($(LUAJIT_VERSION),2.1.0-beta3)
 	$(APPLY) $(SRC)/luajit/luajit-v2.1.0-beta3.patch
+endif
+ifeq ($(LUAJIT_VERSION),2.1.0-git)
+	$(APPLY) $(SRC)/luajit/luajit-v2.1.0-git.patch
 endif
 	$(MOVE)
 
@@ -78,9 +82,9 @@ endif
 
 ifdef HAVE_MACOSX
 ifeq ($(MY_TARGET_ARCH),x86_64)
-	cd $< && CFLAGS="-DLUAJIT_ENABLE_GC64" LD_FLAGS="" $(MAKE) -j8
+	cd $< && CFLAGS="-DLUAJIT_ENABLE_GC64" LD_FLAGS="" $(MAKE) MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION) -j8
 else
-	cd $< && LD_FLAGS="" $(MAKE) -j8
+	cd $< && LD_FLAGS="" $(MAKE) MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION) -j8
 endif
 	
 endif
