@@ -40,3 +40,20 @@ index d422827..bb4c654 100644
  /*
  ** Size of lauxlib and io.* on-stack buffers. Weird workaround to avoid using
  ** unreasonable amounts of stack space, but still retain ABI compatibility.
+
+diff --git a/src/lj_load.c b/src/lj_load.c
+index 746bf42..230d3d4 100644
+--- a/src/lj_load.c
++++ b/src/lj_load.c
+@@ -38,7 +38,11 @@ static TValue *cpparser(lua_State *L, lua_CFunction dummy, void *ud)
+     setstrV(L, L->top++, lj_err_str(L, LJ_ERR_XMODE));
+     lj_err_throw(L, LUA_ERRSYNTAX);
+   }
++#ifdef ONLY_BYTECODE
++  pt = lj_bcread(ls);
++#else
+   pt = bc ? lj_bcread(ls) : lj_parse(ls);
++#endif
+   fn = lj_func_newL_empty(L, pt, tabref(L->env));
+   /* Don't combine above/below into one statement. */
+   setfuncV(L, L->top++, fn);
