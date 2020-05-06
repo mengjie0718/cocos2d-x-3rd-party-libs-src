@@ -5,13 +5,13 @@ LUAJIT_URL := http://luajit.org/download/LuaJIT-$(LUAJIT_VERSION).tar.gz
 LUAJIT_GIT :=https://gitee.com/mengjie0718/luajit-2.0.git
 OSX_VERSION:=10.13
 EXTRA_CFLAGS ="$(EXTRA_CFLAGS) -DLUAJIT_DISABLE_PROFILE -DLUAJIT_DISABLE_FFI"
-$(TARBALLS)/LuaJIT-$(LUAJIT_VERSION).tar.gz:
+$(TARBALLS)/LuaJIT-$(LUAJIT_VERSION).tar.xz:
 ifeq ($(LUAJIT_VERSION),2.1.0-git)
 	$(call download_git,$(LUAJIT_GIT),v2.1,v2.1)
 else
 	$(call download,$(LUAJIT_URL))
 endif
-luajit: LuaJIT-$(LUAJIT_VERSION).tar.gz
+luajit: LuaJIT-$(LUAJIT_VERSION).tar.xz
 	$(UNPACK)
 ifeq ($(LUAJIT_VERSION),2.0.1)
 	$(APPLY) $(SRC)/luajit/v2.0.1_hotfix1.patch
