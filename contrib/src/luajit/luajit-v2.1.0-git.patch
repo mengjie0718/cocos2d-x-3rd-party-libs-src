@@ -57,16 +57,3 @@ index 746bf42..230d3d4 100644
    fn = lj_func_newL_empty(L, pt, tabref(L->env));
    /* Don't combine above/below into one statement. */
    setfuncV(L, L->top++, fn);
-
-diff --git a/src/lj_arch.h b/src/lj_arch.h
-index 027b39c..cb44323 100644
---- a/src/lj_arch.h
-+++ b/src/lj_arch.h
-@@ -589,7 +589,7 @@
- #if defined(__symbian__) || LJ_TARGET_WINDOWS
- #define LUAJIT_NO_EXP2
- #endif
--#if LJ_TARGET_CONSOLE || (LJ_TARGET_IOS && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0)
-+#if LJ_TARGET_CONSOLE || LJ_TARGET_IOS 
- #define LJ_NO_SYSTEM   1
- #endif

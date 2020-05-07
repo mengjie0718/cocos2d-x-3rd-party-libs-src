@@ -4,7 +4,6 @@ LUAJIT_VERSION := 2.1.0-git
 LUAJIT_URL := http://luajit.org/download/LuaJIT-$(LUAJIT_VERSION).tar.gz
 LUAJIT_GIT :=https://gitee.com/mengjie0718/luajit-2.0.git
 OSX_VERSION:=10.13
-EXTRA_CFLAGS ="$(EXTRA_CFLAGS) -DLUAJIT_DISABLE_PROFILE -DLUAJIT_DISABLE_FFI"
 $(TARBALLS)/LuaJIT-$(LUAJIT_VERSION).tar.xz:
 ifeq ($(LUAJIT_VERSION),2.1.0-git)
 	$(call download_git,$(LUAJIT_GIT),v2.1,v2.1)
@@ -43,6 +42,7 @@ endif
 
 ifeq ($(MY_TARGET_ARCH),i386)
 LUAJIT_HOST_CC="gcc -m32 $(OPTIM)"
+EXTRA_CFLAGS+=-DLJ_NO_SYSTEM=1
 endif
 
 LUAJIT_TARGET_FLAGS="-isysroot $(IOS_SDK) -Qunused-arguments $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS) $(ENABLE_BITCODE)"
