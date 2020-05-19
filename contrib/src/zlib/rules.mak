@@ -36,6 +36,6 @@ ifndef HAVE_WIN32
 	cd $< && $(MAKE) install
 endif
 ifdef HAVE_WIN32
-	cd $< && make -fwin32/Makefile.gcc BINARY_PATH=$(PREFIX)/bin INCLUDE_PATH=$(PREFIX)/include LIBRARY_PATH=$(PREFIX)/lib install
+	cd $< && make -fwin32/Makefile.gcc PREFIX=${CROSS_PREFIX} BINARY_PATH=$(PREFIX)/bin INCLUDE_PATH=$(PREFIX)/include LIBRARY_PATH=$(PREFIX)/lib install
 endif
 	touch $@

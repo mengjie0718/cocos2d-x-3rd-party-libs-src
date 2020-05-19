@@ -395,6 +395,7 @@ case "${OS}" in
 		add_make_enabled "HAVE_LINUX"
 		;;
 	*mingw*)
+    add_make "CROSS_PREFIX=$HOST-"
 		add_make_enabled "HAVE_WIN32"
 		;;
 	*solaris*)
