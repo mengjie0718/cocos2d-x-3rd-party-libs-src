@@ -17,5 +17,5 @@ endif
 
 .uv: uv toolchain.cmake
 	cd $< && $(HOSTVARS) CFLAGS="$(CFLAGS) $(EX_ECFLAGS)" $(CMAKE) -DBUILD_TESTING=OFF $(cmake_android_def) $(make_option) 
-	cd $< && $(MAKE) VERBOSE=1 install
+	cd $< && $(MAKE) VERBOSE=1
 	touch $@

@@ -39,7 +39,9 @@ ifeq ($(MY_TARGET_ARCH),armv7)
 OPENSSL_CONFIG_VARS=linux-generic32
 endif
 endif
-
+ifdef HAVE_WIN32
+OPENSSL_CONFIG_VARS=mingw64
+endif
 ifdef HAVE_ANDROID
 export ANDROID_SYSROOT=$(ANDROID_TOOLCHAIN_PATH)/sysroot
 export SYSROOT=$(ANDROID_SYSROOT)
