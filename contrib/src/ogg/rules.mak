@@ -7,9 +7,9 @@ $(TARBALLS)/libogg-$(LIBIOGG_VERSION).tar.gz:
 
 .sum-ogg: libogg-$(LIBIOGG_VERSION).tar.gz
 
-ogg: libogg-$(LIBIOGG_VERSION).tar.gz .sum-ogg
+ogg: libogg-$(LIBIOGG_VERSION).tar.gz
 	$(UNPACK)
 .ogg: ogg
-	cd $< && $(HOSTVARS) ./configure $(HOSTCONF) --disable-nls
-	cd $< && $(MAKE) install
+	cd lib$<-${LIBIOGG_VERSION} && $(HOSTVARS) ./configure $(HOSTCONF)
+	cd lib$<-${LIBIOGG_VERSION} && $(MAKE) install
 	touch $@
