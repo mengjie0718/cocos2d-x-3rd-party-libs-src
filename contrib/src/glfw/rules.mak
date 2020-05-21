@@ -14,7 +14,7 @@ glfw: glfw-$(GLFW_VERSION).tar.gz .sum-glfw
 	$(APPLY) $(SRC)/glfw/dont_include_applicationservices.patch
 	$(MOVE)
 
-.glfw: glfw
-	cd $< && $(HOSTVARS) CFLAGS="$(CFLAGS) $(EX_ECFLAGS)"  cmake .  -DGLFW_BUILD_DOCS=0 -DCMAKE_INSTALL_PREFIX=$(PREFIX)
+.glfw: glfw toolchain.cmake
+	cd $< && $(HOSTVARS) CFLAGS="$(CFLAGS) $(EX_ECFLAGS)" ${CMAKE} .  -DGLFW_BUILD_DOCS=0 -DCMAKE_INSTALL_PREFIX=$(PREFIX)
 	cd $< && $(MAKE) VERBOSE=1 install
 	touch $@
