@@ -1,9 +1,9 @@
 # bullet
 
-GLSLOPT_GITURL := https://github.com/cocos2d/glsl-optimizer
+GLSLOPT_GITURL := https://gitee.com/mengjie0718/glsl-optimizer.git
 
 $(TARBALLS)/glsl-optimizer-git.tar.xz:
-	$(call download_git,$(GLSLOPT_GITURL),master,23f7d591a57)
+	$(call download_git,$(GLSLOPT_GITURL),master)
 
 .sum-glslopt: glsl-optimizer-git.tar.xz
 	$(warning $@ not implemented)
