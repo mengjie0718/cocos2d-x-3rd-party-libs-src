@@ -196,3 +196,12 @@ You can following the [README](./contrib/src/README) file to do this job.
 
 ## How to add new 3rd party libraries
 Please refer to [README](./contrib/src/README)
+a=>dll
+```
+x86_64-w64-mingw32-ar x libiconv.a 
+x86_64-w64-mingw32-gcc -shared -o libiconv.dll *.o -Wl,--export-all-symbols,--output-def,libiconv.def -L/Users/mengjie/work/cocos2d-x-3rd/contrib/install-win/x86_64/lib -L/Users/mengjie/work/cocos2d-x-3rd/contrib/install-win/x86_64/lib -lz
+```
+dll=>lib
+```
+x86_64-w64-mingw32-dlltool --dllname libvorbis.dll --input-def vorbis.def --output-lib libvorbis.lib
+```
