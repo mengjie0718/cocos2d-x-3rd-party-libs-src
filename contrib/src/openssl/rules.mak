@@ -1,4 +1,8 @@
 # OPENSSL
+# error "glob" is not exported by the File::Glob module
+# In files Configure and test/build.info, change
+# use if $^O ne "VMS", 'File::Glob' => qw/glob/;
+# use if $^O ne "VMS", 'File::Glob' => qw/:glob/;
 OPENSSL_VERSION := 1.1.0c
 OPENSSL_URL := https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz
 
