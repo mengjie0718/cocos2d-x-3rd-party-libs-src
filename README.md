@@ -138,7 +138,7 @@ cd build
 ./build.sh -p=mac --libs=luajit -a=i386
 ./build.sh -p=win --libs=luajit -a=i386
 ./build.sh -p=ios --libs=luajit -a=arm64
-./build.sh -p=android --libs=luajit
+./build.sh -p=android --libs=luajit -a=x86
 ```
 After running this command, it will generate a folder named `png`:
 
