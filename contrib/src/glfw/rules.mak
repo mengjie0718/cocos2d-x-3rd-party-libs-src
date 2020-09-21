@@ -1,5 +1,5 @@
 # GLFW
-GLFW_VERSION := 3.3
+GLFW_VERSION := 3.3.2
 #GLFW_URL := $(GITHUB)/glfw/glfw/releases/download/$(GLFW_VERSION)/glfw-$(GLFW_VERSION).zip
 GLFW_URL := https://codeload.github.com/glfw/glfw/tar.gz/$(GLFW_VERSION)
 
