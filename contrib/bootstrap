@@ -339,6 +339,11 @@ check_tizen_sdk()
     add_make "TIZEN_STUDIO_HOME := ${TIZEN_STUDIO_HOME}"
 }
 
+check_mingw()
+{
+    add_make "EXTRA_LDFLAGS := -static-libgcc -static-libstdc++"
+}
+
 test -z "$PREFIX" || add_make "PREFIX := $PREFIX"
 
 #
@@ -395,6 +400,7 @@ case "${OS}" in
 		add_make_enabled "HAVE_LINUX"
 		;;
 	*mingw*)
+    check_mingw
     add_make "CROSS_PREFIX=$HOST-"
 		add_make_enabled "HAVE_WIN32"
 		;;
