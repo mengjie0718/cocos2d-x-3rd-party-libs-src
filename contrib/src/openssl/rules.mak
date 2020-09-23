@@ -44,7 +44,12 @@ OPENSSL_CONFIG_VARS=linux-generic32
 endif
 endif
 ifdef HAVE_WIN32
+ifeq ($(MY_TARGET_ARCH),x86_64)
 OPENSSL_CONFIG_VARS=mingw64
+endif
+ifeq ($(MY_TARGET_ARCH),i386)
+OPENSSL_CONFIG_VARS=mingw
+endif
 endif
 ifdef HAVE_ANDROID
 export ANDROID_SYSROOT=$(ANDROID_TOOLCHAIN_PATH)/sysroot
