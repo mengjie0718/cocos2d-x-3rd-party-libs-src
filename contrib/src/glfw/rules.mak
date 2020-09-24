@@ -15,6 +15,6 @@ glfw: glfw-$(GLFW_VERSION).tar.gz .sum-glfw
 	$(MOVE)
 
 .glfw: glfw toolchain.cmake
-	cd $< && $(HOSTVARS) CFLAGS="$(CFLAGS) $(EX_ECFLAGS)" ${CMAKE} .  -DGLFW_BUILD_DOCS=0 -DCMAKE_INSTALL_PREFIX=$(PREFIX)
+	cd $< && $(HOSTVARS) CFLAGS="$(CFLAGS) $(EX_ECFLAGS)" ${CMAKE} .  -DGLFW_BUILD_DOCS=0  -DBUILD_SHARED_LIBS=1 -DCMAKE_INSTALL_PREFIX=$(PREFIX)
 	cd $< && $(MAKE) VERBOSE=1 install
 	touch $@

@@ -10,6 +10,6 @@ $(TARBALLS)/libogg-$(LIBIOGG_VERSION).tar.gz:
 ogg: libogg-$(LIBIOGG_VERSION).tar.gz
 	$(UNPACK)
 .ogg: ogg toolchain.cmake
-	cd lib$<-${LIBIOGG_VERSION} && $(HOSTVARS) ${CMAKE}  -DBUILD_SHARED_LIBS=1
+	cd lib$<-${LIBIOGG_VERSION} && $(HOSTVARS) ${CMAKE}
 	cd lib$<-${LIBIOGG_VERSION} && $(MAKE) install
 	touch $@
