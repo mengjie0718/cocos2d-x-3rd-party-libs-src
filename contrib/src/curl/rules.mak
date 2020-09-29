@@ -32,6 +32,7 @@ endif
 		--with-zlib \
 		--enable-ipv6 \
 		--disable-ldap \
+		-enable-static \
 		$(configure_option)
 
 	cd $< && $(MAKE) install
