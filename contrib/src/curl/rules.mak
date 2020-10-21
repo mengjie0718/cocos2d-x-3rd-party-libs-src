@@ -25,14 +25,8 @@ ifdef HAVE_TVOS
 configure_option+=--disable-ntlm-wb
 endif
 
-.curl: curl .zlib .openssl
-	$(RECONF)
-	cd $< && $(HOSTVARS_PIC) ./configure $(HOSTCONF) \
-		--with-ssl=$(PREFIX) \
-		--with-zlib \
-		--enable-ipv6 \
-		--disable-ldap \
-		$(configure_option)
+.curl: curl toolchain.cmake .zlib .openssl
+	cd $< && $(HOSTVARS) ${CMAKE} -DCURL_STATICLIB=1
 
 	cd $< && $(MAKE) install
 	touch $@
