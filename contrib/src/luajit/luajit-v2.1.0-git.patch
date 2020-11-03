@@ -82,7 +82,7 @@ index f6e6d46..e81f087 100644
 +  }else if (tvislightud(o1) || tvislightud(o2)) {
 +    int64_t res = 0;
 +    if( tvisnumber(o1)){
-+      int64_t o1v = numV(o1);
++      lua_Number o1v = numV(o1);
 +#if LJ_64
 +      int64_t o2v = (int64_t) lightudV(G(L),o2); 
 +#else
@@ -96,7 +96,7 @@ index f6e6d46..e81f087 100644
 +#else
 +      int64_t o1v = *((int64_t *) lightudV(G(L),o1));
 +#endif
-+      int64_t o2v =  numV(o2);
++      lua_Number o2v =  numV(o2);
 +      res = o1v - o2v;
 +      return (TValue *)(intptr_t)(((op&2) ? res <= 0 : res < 0) ^ (op&1));
 +    }else{
