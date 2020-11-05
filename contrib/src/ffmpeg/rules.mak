@@ -2,7 +2,7 @@
 FFMPEG_VERSION := 4.3.1
 FFMPEG_URL := http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2
 
-configure_option=--prefix=$(PREFIX) --disable-programs --disable-doc --enable-opengl --enable-static --pkg-config-flags="--static" --enable-nonfree
+configure_option=--prefix=$(PREFIX) --disable-programs --disable-ffmpeg --disable-ffplay --disable-ffprobe --disable-ffserver --disable-doc --enable-opengl --enable-static --pkg-config-flags="--static" --enable-nonfree
 
 $(TARBALLS)/ffmpeg-${FFMPEG_VERSION}.tar.bz2:
 	$(call download,$(FFMPEG_URL))
