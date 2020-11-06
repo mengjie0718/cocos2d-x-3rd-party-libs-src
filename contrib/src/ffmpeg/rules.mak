@@ -2,17 +2,17 @@
 FFMPEG_VERSION := 4.3.1
 FFMPEG_URL := http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2
 
-configure_option=--prefix=$(PREFIX) --disable-programs --disable-ffmpeg --disable-ffplay --disable-ffprobe --disable-doc --enable-opengl --enable-static --pkg-config-flags="--static" --enable-nonfree
+configure_option=--prefix=$(PREFIX) --disable-programs --disable-ffmpeg --disable-ffplay --disable-ffprobe --disable-doc --disable-opengl --enable-static --pkg-config-flags="--static" --enable-nonfree
 ifdef HAVE_CROSS_COMPILE
-	configure_option+=--enable-cross-compile --cross-prefix=$(HOST)- --arch=$(ARCH)
+	configure_option+=--enable-cross-compile --arch=$(MY_TARGET_ARCH)
 	ifdef HAVE_WIN32
-		configure_option+=--target-os=win32
+		configure_option+=--target-os=$(HOST) --cross-prefix=$(HOST)- 
 	endif
 	ifdef HAVE_IOS
-		configure_option+=--target-os=ios
+		configure_option+=--target-os=darwin
 	endif
 	ifdef HAVE_ANDROID
-		configure_option+=--target-os=android
+		configure_option+=--target-os=$(HOST)
 	endif
 endif
 $(TARBALLS)/ffmpeg-${FFMPEG_VERSION}.tar.bz2:
