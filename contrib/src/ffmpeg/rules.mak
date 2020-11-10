@@ -12,7 +12,7 @@ ifdef HAVE_CROSS_COMPILE
 		configure_option+=--target-os=darwin
 	endif
 	ifdef HAVE_ANDROID
-		configure_option+=--target-os=$(HOST)
+		configure_option+=--target-os=android
 	endif
 endif
 $(TARBALLS)/ffmpeg-${FFMPEG_VERSION}.tar.bz2:
