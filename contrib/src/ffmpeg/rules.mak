@@ -8,7 +8,7 @@ configure_option=--prefix=$(PREFIX) --disable-securetransport --disable-encoders
 --disable-programs \
 --disable-ffmpeg \
 --disable-ffplay \
---disable-protocols \
+--disable-network --disable-protocols --disable-protocol=rtp --disable-protocol=udp --disable-protocol=http --disable-protocol=tcp \
 --disable-ffprobe \
 --disable-doc \
 --disable-opengl  \
