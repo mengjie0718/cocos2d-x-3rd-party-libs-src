@@ -2,7 +2,18 @@
 FFMPEG_VERSION := 4.3.1
 FFMPEG_URL := http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2
 
-configure_option=--prefix=$(PREFIX) --disable-programs --disable-ffmpeg --disable-ffplay --disable-ffprobe --disable-doc --disable-opengl  --enable-nonfree
+configure_option=--prefix=$(PREFIX) --disable-securetransport --disable-encoders \
+--disable-coreimage   \
+--disable-bzlib \
+--disable-programs \
+--disable-ffmpeg \
+--disable-ffplay \
+--disable-protocols \
+--disable-ffprobe \
+--disable-doc \
+--disable-opengl  \
+--enable-protocol=file \
+--enable-nonfree
 ifdef HAVE_CROSS_COMPILE
 	configure_option+=--enable-cross-compile --arch=$(MY_TARGET_ARCH)
 	ifdef HAVE_WIN32
