@@ -35,9 +35,7 @@ ifdef HAVE_CROSS_COMPILE
 		else
 			FFMPEG_OPTION+=--arch=$(MY_TARGET_ARCH)
 		endif
-		FFMPEG_OPTION+=--target-os=android --disable-shared --enable-static \
-		 --extra-cflags="-Os -fPIC -DANDROID -Wfatal-errors -Wno-deprecated" \
-         --extra-cxxflags="-D__thumb__ -fexceptions -frtti"
+		FFMPEG_OPTION+=--target-os=android --enable-shared
 	endif
 endif
 $(TARBALLS)/ffmpeg-${FFMPEG_VERSION}.tar.bz2:
