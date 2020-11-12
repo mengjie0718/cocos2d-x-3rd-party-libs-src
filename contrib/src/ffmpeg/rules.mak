@@ -12,6 +12,7 @@ configure_option=--prefix=$(PREFIX) --disable-securetransport --disable-encoders
 --disable-ffprobe \
 --disable-doc \
 --disable-opengl  \
+--disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4 --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=mpegvideo \
 --enable-protocol=file \
 --enable-nonfree
 ifdef HAVE_CROSS_COMPILE
