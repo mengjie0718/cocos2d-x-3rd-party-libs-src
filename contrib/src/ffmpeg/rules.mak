@@ -33,9 +33,9 @@ ifdef HAVE_CROSS_COMPILE
 		ifeq ($(MY_TARGET_ARCH),arm64-v8a)
 			FFMPEG_OPTION+=--arch=aarch64
 		else
-			FFMPEG_OPTION+=--arch=$(MY_TARGET_ARCH)
+			FFMPEG_OPTION+=--arch=$(MY_TARGET_ARCH)  
 		endif
-		FFMPEG_OPTION+=--target-os=android --enable-shared
+		FFMPEG_OPTION+=--target-os=android --cross-prefix=$(HOST)-
 	endif
 endif
 $(TARBALLS)/ffmpeg-${FFMPEG_VERSION}.tar.bz2:
