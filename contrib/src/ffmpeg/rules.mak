@@ -31,7 +31,7 @@ ifdef HAVE_CROSS_COMPILE
 	endif
 	ifdef HAVE_ANDROID
 		ifeq ($(MY_TARGET_ARCH),arm64-v8a)
-			FFMPEG_OPTION+=--arch=arm64-v8a
+			FFMPEG_OPTION+=--arch=aarch64
 		else
 			FFMPEG_OPTION+=--arch=$(MY_TARGET_ARCH)
 		endif
