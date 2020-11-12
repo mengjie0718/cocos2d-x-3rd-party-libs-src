@@ -22,15 +22,22 @@ FFMPEG_OPTION=--prefix=$(PREFIX) --disable-securetransport --disable-encoders \
 --enable-demuxer=mov --enable-demuxer=mpegps \
 --enable-demuxer=mpegts
 ifdef HAVE_CROSS_COMPILE
-	FFMPEG_OPTION+=--enable-cross-compile --arch=$(MY_TARGET_ARCH)
+	FFMPEG_OPTION+=--enable-cross-compile
 	ifdef HAVE_WIN32
-		FFMPEG_OPTION+=--target-os=mingw32 --enable-shared --cross-prefix=$(HOST)- 
+		FFMPEG_OPTION+=--arch=$(MY_TARGET_ARCH) --target-os=mingw32 --enable-shared --cross-prefix=$(HOST)- 
 	endif
 	ifdef HAVE_IOS
-		FFMPEG_OPTION+=--target-os=darwin
+		FFMPEG_OPTION+=--arch=$(MY_TARGET_ARCH) --target-os=darwin --enable-static
 	endif
 	ifdef HAVE_ANDROID
-		FFMPEG_OPTION+=--target-os=android
+		ifeq ($(MY_TARGET_ARCH),arm64-v8a)
+			FFMPEG_OPTION+=--arch=arm64-v8a
+		else
+			FFMPEG_OPTION+=--arch=$(MY_TARGET_ARCH)
+		endif
+		FFMPEG_OPTION+=--target-os=android --disable-shared --enable-static \
+		 --extra-cflags="-Os -fPIC -DANDROID -Wfatal-errors -Wno-deprecated" \
+         --extra-cxxflags="-D__thumb__ -fexceptions -frtti"
 	endif
 endif
 $(TARBALLS)/ffmpeg-${FFMPEG_VERSION}.tar.bz2:
