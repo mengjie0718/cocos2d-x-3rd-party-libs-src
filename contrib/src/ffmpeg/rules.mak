@@ -14,6 +14,7 @@ configure_option=--prefix=$(PREFIX) --disable-securetransport --disable-encoders
 --disable-opengl  \
 --disable-muxers \
 --disable-bsfs \
+--disable-indevs \
 --disable-parsers --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4 --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=mpegvideo \
 --enable-protocol=file
 ifdef HAVE_CROSS_COMPILE
