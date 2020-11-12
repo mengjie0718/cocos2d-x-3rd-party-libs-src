@@ -13,9 +13,9 @@ configure_option=--prefix=$(PREFIX) --disable-securetransport --disable-encoders
 --disable-doc \
 --disable-opengl  \
 --disable-muxers \
---disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4 --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=mpegvideo \
---enable-protocol=file \
---enable-nonfree
+--disable-bsfs \
+--disable-parsers --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4 --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=mpegvideo \
+--enable-protocol=file
 ifdef HAVE_CROSS_COMPILE
 	configure_option+=--enable-cross-compile --arch=$(MY_TARGET_ARCH)
 	ifdef HAVE_WIN32
