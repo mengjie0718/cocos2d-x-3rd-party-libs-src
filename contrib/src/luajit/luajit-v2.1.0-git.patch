@@ -1,67 +1,8 @@
-diff --git a/src/lj_strfmt_num.c b/src/lj_strfmt_num.c
-index 36b11dc..3004b24 100644
---- a/src/lj_strfmt_num.c
-+++ b/src/lj_strfmt_num.c
-@@ -576,6 +576,9 @@ static char *lj_strfmt_wfnum(SBuf *sb, SFormat sf, lua_Number n, char *p)
- /* Add formatted floating-point number to buffer. */
- SBuf *lj_strfmt_putfnum(SBuf *sb, SFormat sf, lua_Number n)
- {
-+  if(n == (int64_t) n){
-+    sf=(STRFMT_NUM|STRFMT_T_FP_G | (1 << STRFMT_SH_PREC))^STRFMT_T_FP_E;
-+  }
-   setsbufP(sb, lj_strfmt_wfnum(sb, sf, n, NULL));
-   return sb;
- }
-@@ -586,7 +589,13 @@ SBuf *lj_strfmt_putfnum(SBuf *sb, SFormat sf, lua_Number n)
- GCstr * LJ_FASTCALL lj_strfmt_num(lua_State *L, cTValue *o)
- {
-   char buf[STRFMT_MAXBUF_NUM];
--  MSize len = (MSize)(lj_strfmt_wfnum(NULL, STRFMT_G14, o->n, buf) - buf);
-+  SFormat sf=STRFMT_NUM;
-+  if(o->n == (int64_t) o->n){
-+    sf=(STRFMT_NUM|STRFMT_T_FP_G | (1 << STRFMT_SH_PREC))^STRFMT_T_FP_E;
-+  }else{
-+    sf=STRFMT_G14;
-+  }
-+  MSize len = (MSize)(lj_strfmt_wfnum(NULL, sf, o->n, buf) - buf);
-   return lj_str_new(L, buf, len);
- }
- 
-diff --git a/src/luaconf.h b/src/luaconf.h
-index d422827..bb4c654 100644
---- a/src/luaconf.h
-+++ b/src/luaconf.h
-@@ -102,7 +102,7 @@
- 
- /* Note: changing the following defines breaks the Lua 5.1 ABI. */
- #define LUA_INTEGER	ptrdiff_t
--#define LUA_IDSIZE	60	/* Size of lua_Debug.short_src. */
-+#define LUA_IDSIZE	512	/* Size of lua_Debug.short_src. */
- /*
- ** Size of lauxlib and io.* on-stack buffers. Weird workaround to avoid using
- ** unreasonable amounts of stack space, but still retain ABI compatibility.
-
-diff --git a/src/lj_load.c b/src/lj_load.c
-index 746bf42..230d3d4 100644
---- a/src/lj_load.c
-+++ b/src/lj_load.c
-@@ -38,7 +38,11 @@ static TValue *cpparser(lua_State *L, lua_CFunction dummy, void *ud)
-     setstrV(L, L->top++, lj_err_str(L, LJ_ERR_XMODE));
-     lj_err_throw(L, LUA_ERRSYNTAX);
-   }
-+#ifdef ONLY_BYTECODE
-+  pt = lj_bcread(ls);
-+#else
-   pt = bc ? lj_bcread(ls) : lj_parse(ls);
-+#endif
-   fn = lj_func_newL_empty(L, pt, tabref(L->env));
-   /* Don't combine above/below into one statement. */
-   setfuncV(L, L->top++, fn);
 diff --git a/src/Makefile b/src/Makefile
-index 5cf1f0b..92bbe0a 100644
+index 2538503f..fba20e51 100644
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -316,7 +316,7 @@ ifeq (Darwin,$(TARGET_SYS))
+@@ -327,7 +327,7 @@ ifeq (Darwin,$(TARGET_SYS))
  else
  ifeq (iOS,$(TARGET_SYS))
    TARGET_STRIP+= -x
@@ -69,13 +10,12 @@ index 5cf1f0b..92bbe0a 100644
 +  TARGET_XSHLDFLAGS= -dynamiclib -single_module -fPIC
    TARGET_DYNXLDOPTS=
    TARGET_XSHLDFLAGS+= -install_name $(TARGET_DYLIBPATH) -compatibility_version $(MAJVER).$(MINVER) -current_version $(MAJVER).$(MINVER).$(RELVER)
- else
-
+   ifeq (arm64,$(TARGET_LJARCH))
 diff --git a/src/lj_meta.c b/src/lj_meta.c
-index f6e6d46..e81f087 100644
+index 660dfec0..f70250ab 100644
 --- a/src/lj_meta.c
 +++ b/src/lj_meta.c
-@@ -414,6 +414,29 @@ TValue *lj_meta_comp(lua_State *L, cTValue *o1, cTValue *o2, int op)
+@@ -419,6 +419,29 @@ TValue *lj_meta_comp(lua_State *L, cTValue *o1, cTValue *o2, int op)
      }
    } else if (tvisbool(o1) && tvisbool(o2)) {
      goto trymt;
@@ -105,3 +45,45 @@ index f6e6d46..e81f087 100644
    } else {
    err:
      lj_err_comp(L, o1, o2);
+diff --git a/src/lj_strfmt_num.c b/src/lj_strfmt_num.c
+index dfd56bd4..e0d27f51 100644
+--- a/src/lj_strfmt_num.c
++++ b/src/lj_strfmt_num.c
+@@ -576,6 +576,9 @@ static char *lj_strfmt_wfnum(SBuf *sb, SFormat sf, lua_Number n, char *p)
+ /* Add formatted floating-point number to buffer. */
+ SBuf *lj_strfmt_putfnum(SBuf *sb, SFormat sf, lua_Number n)
+ {
++  if(n == (int64_t) n){
++    sf=(STRFMT_NUM|STRFMT_T_FP_G | (1 << STRFMT_SH_PREC))^STRFMT_T_FP_E;
++  }
+   sb->w = lj_strfmt_wfnum(sb, sf, n, NULL);
+   return sb;
+ }
+@@ -586,7 +589,13 @@ SBuf *lj_strfmt_putfnum(SBuf *sb, SFormat sf, lua_Number n)
+ GCstr * LJ_FASTCALL lj_strfmt_num(lua_State *L, cTValue *o)
+ {
+   char buf[STRFMT_MAXBUF_NUM];
+-  MSize len = (MSize)(lj_strfmt_wfnum(NULL, STRFMT_G14, o->n, buf) - buf);
++  SFormat sf=STRFMT_NUM;
++  if(o->n == (int64_t) o->n){
++    sf=(STRFMT_NUM|STRFMT_T_FP_G | (1 << STRFMT_SH_PREC))^STRFMT_T_FP_E;
++  }else{
++    sf=STRFMT_G14;
++  }
++  MSize len = (MSize)(lj_strfmt_wfnum(NULL, sf, o->n, buf) - buf);
+   return lj_str_new(L, buf, len);
+ }
+ 
+diff --git a/src/luaconf.h b/src/luaconf.h
+index 5ba6eda9..581b7afd 100644
+--- a/src/luaconf.h
++++ b/src/luaconf.h
+@@ -102,7 +102,7 @@
+ 
+ /* Note: changing the following defines breaks the Lua 5.1 ABI. */
+ #define LUA_INTEGER	ptrdiff_t
+-#define LUA_IDSIZE	60	/* Size of lua_Debug.short_src. */
++#define LUA_IDSIZE	512	/* Size of lua_Debug.short_src. */
+ /*
+ ** Size of lauxlib and io.* on-stack buffers. Weird workaround to avoid using
+ ** unreasonable amounts of stack space, but still retain ABI compatibility.
